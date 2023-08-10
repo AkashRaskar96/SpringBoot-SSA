@@ -22,17 +22,22 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.adt.service.SsaService;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = SsnValidationRestController.class)
-public class SsnValidationRestControllerTest {
+@WebMvcTest
+public class SsnValidationRestControllerTest2 {
 
-	@Autowired
 	private MockMvc mockMvc;
 
 	@MockBean
 	private SsaService service;
 
+	@InjectMocks
+	SsnValidationRestController ssnValidationRestController;
+
 	@Test
 	public void validateTest() throws Exception {
+
+		MockitoAnnotations.initMocks(this);
+		mockMvc = MockMvcBuilders.standaloneSetup(ssnValidationRestController).build();
 
 		when(service.checkEnrollment("101", "RI")).thenReturn("IN-VALID");
 		MockHttpServletRequestBuilder req = MockMvcRequestBuilders.get("/ssn/validate/101/RI")
